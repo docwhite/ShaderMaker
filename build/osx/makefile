@@ -46,9 +46,9 @@ clean:
 	rm -rf $(OBJS) *.dylib
 
 clean_package:
-	rm -rf "$(DIR_BUNDLE)/ShaderMaker.bundle"
+	rm -rf "$(DIR_BUNDLE)/Anthem.bundle"
 
 package:
-	mkdir -p "$(DIR_BUNDLE)/ShaderMaker.bundle"/Contents/MacOS
-	cp Info.plist "$(DIR_BUNDLE)/ShaderMaker.bundle/Contents"
-	mv ./ShaderMaker.dylib "$(DIR_BUNDLE)/ShaderMaker.bundle/Contents/MacOS/ShaderMaker"
+	mkdir -p "$(DIR_BUNDLE)/Anthem.bundle"/Contents/MacOS
+	cp Info.plist "$(DIR_BUNDLE)/Anthem.bundle/Contents"
+	mv ./ShaderMaker.dylib "$(DIR_BUNDLE)/Anthem.bundle/Contents/MacOS/Anthem"

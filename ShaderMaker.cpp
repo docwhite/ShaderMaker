@@ -54,11 +54,11 @@ int (*cross_secure_sprintf)(char *, size_t, const char *, ...) = snprintf;
 #define FFPARAM_SPEED       (0)
 #define FFPARAM_MOUSEX      (1)
 #define FFPARAM_MOUSEY      (2)
-#define FFPARAM_MOUSELEFTX  (3)
-#define FFPARAM_MOUSELEFTY  (4)
-#define FFPARAM_RED         (5)
-#define FFPARAM_GREEN       (6)
-#define FFPARAM_BLUE        (7)
+#define FFPARAM_MOUSELEFTX  (6)
+#define FFPARAM_MOUSELEFTY  (7)
+#define FFPARAM_RED         (3)
+#define FFPARAM_GREEN       (4)
+#define FFPARAM_BLUE        (5)
 #define FFPARAM_ALPHA       (8)
 
 #define STRINGIFY(A) #A
@@ -68,16 +68,16 @@ int (*cross_secure_sprintf)(char *, size_t, const char *, ...) = snprintf;
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 static CFFGLPluginInfo PluginInfo ( 
 	ShaderMaker::CreateInstance,		// Create method
-	"ZZZZ",								// *** Plugin unique ID (4 chars) - this must be unique for each plugin
-	"Shader Maker",						// *** Plugin name - make it different for each plugin 
+	"7871",								// *** Plugin unique ID (4 chars) - this must be unique for each plugin
+	"Anthem",							// *** Plugin name - make it different for each plugin 
 	1,						   			// API major version number 													
 	006,								// API minor version number	
 	1,									// *** Plugin major version number
 	004,								// *** Plugin minor version number
 	FF_EFFECT,							// Plugin type can always be an effect
 	// FF_SOURCE,						// or change this to FF_SOURCE for shaders that do not use a texture
-	"Wraps ShaderToy and GLSLSandbox shaders into a FFGL plugin", // *** Plugin description - you can expand on this
-	"by Lynn Jarvis (spout.zeal.co) OSX port by Amaury Hazan (billaboop.com)"			// *** About - use your own name and details
+	"Generates a strange fractal with sphere lense deformation", 	// *** Plugin description - you can expand on this
+	"by Ramon Blanquer (ramonblanquer.com) "						// *** About - use your own name and details
 );
 
 
@@ -121,6 +121,7 @@ void main()
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 char *fragmentShaderCode = STRINGIFY (
 // ==================== PASTE WITHIN THESE LINES =======================
+
 uniform vec2 mouse;
 void main(void)
 {  
@@ -154,7 +155,11 @@ void main(void)
     float trapFactor = trap;
     col += mix(clamp(1.0 - etFactor, 0.0, 1.0), clamp(trapFactor, 0.0, 1.0), inputColour.x);
     gl_FragColor = vec4( col, 1.0 );
+}
+
 // ==================== END OF SHADER CODE PASTE =======================
+
+
 );
 
 
@@ -178,15 +183,15 @@ ShaderMaker::ShaderMaker():CFreeFrameGLPlugin()
 	SetMaxInputs(2); // TODO - 4 inputs
 
 	// Parameters
-	SetParamInfo(FFPARAM_SPEED,         "Speed",         FF_TYPE_STANDARD, 0.5f); m_UserSpeed = 0.5f;
-	SetParamInfo(FFPARAM_MOUSEX,        "X mouse",       FF_TYPE_STANDARD, 0.5f); m_UserMouseX = 0.5f;
-	SetParamInfo(FFPARAM_MOUSEY,        "Y mouse",       FF_TYPE_STANDARD, 0.5f); m_UserMouseY = 0.5f;
-	SetParamInfo(FFPARAM_MOUSELEFTX,    "X mouse left",  FF_TYPE_STANDARD, 0.5f); m_UserMouseLeftX = 0.5f;
-	SetParamInfo(FFPARAM_MOUSELEFTY,    "Y mouse left",  FF_TYPE_STANDARD, 0.5f); m_UserMouseLeftY = 0.5f;
-	SetParamInfo(FFPARAM_RED,           "Red",           FF_TYPE_STANDARD, 0.5f); m_UserRed = 0.5f;
-	SetParamInfo(FFPARAM_GREEN,         "Green",         FF_TYPE_STANDARD, 0.5f); m_UserGreen = 0.5f;
-	SetParamInfo(FFPARAM_BLUE,          "Blue",          FF_TYPE_STANDARD, 0.5f); m_UserBlue = 0.5f;
-	SetParamInfo(FFPARAM_ALPHA,         "Alpha",         FF_TYPE_STANDARD, 1.0f); m_UserAlpha = 1.0f;
+	SetParamInfo(FFPARAM_SPEED,         "Speed",           FF_TYPE_STANDARD, 0.5f); m_UserSpeed = 0.5f;
+	SetParamInfo(FFPARAM_MOUSEX,        "Sphere Radius",   FF_TYPE_STANDARD, 0.5f); m_UserMouseX = 0.5f;
+	SetParamInfo(FFPARAM_MOUSEY,        "Edge Distortion", FF_TYPE_STANDARD, 0.5f); m_UserMouseY = 0.5f;
+	SetParamInfo(FFPARAM_MOUSELEFTX,    "X mouse left",    FF_TYPE_STANDARD, 0.5f); m_UserMouseLeftX = 0.5f;
+	SetParamInfo(FFPARAM_MOUSELEFTY,    "Y mouse left",    FF_TYPE_STANDARD, 0.5f); m_UserMouseLeftY = 0.5f;
+	SetParamInfo(FFPARAM_RED,           "Fader Dist/Trap", FF_TYPE_STANDARD, 0.5f); m_UserRed = 0.5f;
+	SetParamInfo(FFPARAM_GREEN,         "Iterations",      FF_TYPE_STANDARD, 0.5f); m_UserGreen = 0.5f;
+	SetParamInfo(FFPARAM_BLUE,          "Velocity",        FF_TYPE_STANDARD, 0.5f); m_UserBlue = 0.5f;
+	SetParamInfo(FFPARAM_ALPHA,         "Alpha",           FF_TYPE_STANDARD, 1.0f); m_UserAlpha = 1.0f;
 
 	// Set defaults
 	SetDefaults();
